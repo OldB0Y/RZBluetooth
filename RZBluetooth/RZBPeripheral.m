@@ -177,6 +177,15 @@
 {
     NSParameterAssert(onUpdate);
     RZB_DEFAULT_BLOCK(completion);
+    CBService *service = [self.corePeripheral rzb_serviceForUUID:serviceUUID];
+    CBCharacteristic *characteristic = [service rzb_characteristicForUUID:characteristicUUID];
+    if(characteristic && characteristic.isNotifying == YES){
+        [self setNotifyBlock:onUpdate forCharacteristicUUID:characteristic.UUID serviceUUID:serviceUUID];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            completion(characteristic, nil);
+        });
+        return;
+    }
     RZBUUIDPath *path = RZBUUIDP(self.identifier, serviceUUID, characteristicUUID);
     RZBNotifyCharacteristicCommand *cmd = [[RZBNotifyCharacteristicCommand alloc] initWithUUIDPath:path];
     cmd.notify = YES;
@@ -200,6 +209,15 @@
     // If anything here is nil, there is no completion block, which is fine.
     [self setNotifyBlock:nil forCharacteristicUUID:characteristicUUID serviceUUID:serviceUUID];
 
+    CBService *service = [self.corePeripheral rzb_serviceForUUID:serviceUUID];
+    CBCharacteristic *characteristic = [service rzb_characteristicForUUID:characteristicUUID];
+    if(characteristic && characteristic.isNotifying == NO){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            completion(characteristic, nil);
+        });
+        return;
+    }
+    
     // Disable the notify characteristic on the peripheral if the peripheral is
     // connected. If not connected, trigger completion.
     if (self.corePeripheral.state == CBPeripheralStateConnected) {
