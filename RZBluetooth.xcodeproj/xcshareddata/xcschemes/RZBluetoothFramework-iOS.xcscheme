@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "332995B624C0B347004F0863"
-               BuildableName = "RZBluetoothFramework-iOS.framework"
+               BuildableName = "RZBluetooth.framework"
                BlueprintName = "RZBluetoothFramework-iOS"
                ReferencedContainer = "container:RZBluetooth.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "332995B624C0B347004F0863"
-            BuildableName = "RZBluetoothFramework-iOS.framework"
+            BuildableName = "RZBluetooth.framework"
             BlueprintName = "RZBluetoothFramework-iOS"
             ReferencedContainer = "container:RZBluetooth.xcodeproj">
          </BuildableReference>
